@@ -1,12 +1,13 @@
 {
   "name": "bing-streetside",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "Bing.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Joe Carter <youlikethaaaat@gmail.com>",
+  "repository": "ylt/bing-streetside",
   "license": "ISC",
   "dependencies": {
     "bluebird": "^3.5.0",
