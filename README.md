@@ -14,15 +14,19 @@ This returns a Bubble object
 
 #### getBubbles({opts})
 The available options are:
-  - north (latitude)
-  - south (latidude)
-  - east (longitude)
-  - west (longitude)
   - count
- 
+  - box
+    - north (latitude)
+    - south (latidude)
+    - east (longitude)
+    - west (longitude)
+  - center
+    - lat
+    - lng
+    - radius (in meters)
+
 This returns a list of Bubble objects.
 
-If the need arises, may add in support for querying a center point and a given radius.
 May also add in support for geohashes, along with other bounding box formats.
 
 ### Bubble:

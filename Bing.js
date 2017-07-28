@@ -2,6 +2,7 @@ const Promise = require('bluebird');
 const request = require('request-promise');
 const cheerio = require('cheerio');
 const Bubble = require('./Bubble');
+const geolib = require('geolib');
 
 class Bing {
 
@@ -41,13 +42,29 @@ class Bing {
 
     getBubbles(options) {
         return new Promise((resolve, reject) => {
-            let url = this.globalConfig.features.streetside.getBubblesByLocationRectUrlFormat
 
+            if (options.box) {
+                // used by default
+            }
+            else if (options.center && options.center.radius) {
+                let dist = options.radius * 1.41421; // 1/cos(45deg) to extrapolate it out to square
+                let northwest = geolib.computeDestinationPoint(options.center, options.center.radius, 315);
+                let southeast = geolib.computeDestinationPoint(options.center, options.center.radius, 135);
+
+                options.box = {};
+                options.box.north = northwest.latitude;
+                options.box.south = southeast.latitude;
+                options.box.east = southeast.longitude;
+                options.box.west = northwest.longitude;
+            }
+
+
+            let url = this.globalConfig.features.streetside.getBubblesByLocationRectUrlFormat
                 .replace('{bubbleCount}', options.count || this.globalConfig.features.streetside.defaultNumberOfBubblesToRequest || 25)
-                .replace('{north}', options.north)
-                .replace('{south}', options.south)
-                .replace('{east}', options.east)
-                .replace('{west}', options.west)
+                .replace('{north}', options.box.north)
+                .replace('{south}', options.box.south)
+                .replace('{east}', options.box.east)
+                .replace('{west}', options.box.west)
 
                 .replace('{key}', this.globalConfig.features.streetside.getBubblesServiceKey)
                 .replace('{callback}', '')
